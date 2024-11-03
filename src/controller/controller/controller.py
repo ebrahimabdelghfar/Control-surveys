@@ -2,6 +2,7 @@
 import os
 import time
 import math
+import cvxpy as cp
 import carla.libcarla
 import numpy as np
 from numpy import linalg as la
@@ -21,7 +22,7 @@ class Controller(Node):
 		self.command_publisher = self.create_publisher(CarlaEgoVehicleControl,"/carla/ego_vehicle/vehicle_control_cmd",1)
 		self.create_subscription(Odometry,"/carla/ego_vehicle/odometry",self.pose_callback,1)
 		self.create_subscription(Float32,"/carla/ego_vehicle/speedometer",self.velocitySensor,1)
-		self.create_timer(0.001,self.stanley_control)
+		self.create_timer(0.05,self.mpc_control)
 		self.xc = 0.0
 		self.yc = 0.0
 		self.yaw = 0.0
@@ -37,6 +38,11 @@ class Controller(Node):
 		self.show_animation = show_animation_flag
 		self.k = 3.5  # Stanley control gain
 		self.k_soft = 50.0
+		# Initialize vehicle state and parameters
+		self.N = 10  # Prediction horizon
+		self.dt = 0.1  # Timestep for predictions
+		self.Q = np.diag([1.0, 1.0, 0.5, 0.1])  # State cost weights
+		self.R = np.diag([0.01, 0.01])  # Control cost weights
 	
 	def velocitySensor(self,data:Float32):
 		self.v = data.data
@@ -234,6 +240,44 @@ class Controller(Node):
 			plt.title("Pure Pursuit Control" + str(1))
 			plt.pause(0.001)
 
+	def mpc_control(self):
+		# Predict future states using MPC
+		# Define optimization variables
+		x = cp.Variable((4, self.N + 1))
+		u = cp.Variable((2, self.N))
+	
+		# Define constraints
+		constraints = []
+		constraints += [x[:, 0] == np.array([self.xc, self.yc, self.yaw, self.v])]
+		constraints += [u[0, :] <= 1.22]
+		constraints += [u[0, :] >= -1.22]
+		constraints += [u[1, :] <= 0.4]
+		constraints += [u[1, :] >= -0.4]
+
+		# Define cost function
+		cost = 0
+		for t in range(self.N):
+			cost += cp.quad_form(x[:, t] - np.array([self.waypoints[self.idx][0], self.waypoints[self.idx][1], 0, 0]), self.Q)
+			cost += cp.quad_form(u[:, t], self.R)
+			constraints += [x[:, t + 1] == self.dynamics(x[:, t], u[:, t])]
+			self.idx += 1
+
+		# Define optimization problem
+		problem = cp.Problem(cp.Minimize(cost), constraints)
+
+		# Solve optimization problem
+		problem.solve()
+
+		# Extract first control input
+		steering_angle = u[0, 0].value
+		throttle = u[1, 0].value
+
+		# Publish messages
+		self.car_control_msg.steer = steering_angle
+		self.car_control_msg.throttle = throttle
+		self.command_publisher.publish(self.car_control_msg)
+
+	
 def main(args=None):
    rclpy.init(args=args)
    main_code  = Controller(show_animation_flag = True)
