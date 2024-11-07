@@ -1,0 +1,16 @@
+[1.013s] Invoking command in '/home/ebrahim/control_survey/build/controller': PYTHONPATH=/home/ebrahim/control_survey/build/controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ebrahim/control_survey/install/controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/ebrahim/control_survey/build/controller/build --no-deps symlink_data
+[1.316s] running develop
+[1.494s] running egg_info
+[1.494s] writing controller.egg-info/PKG-INFO
+[1.494s] writing dependency_links to controller.egg-info/dependency_links.txt
+[1.494s] writing entry points to controller.egg-info/entry_points.txt
+[1.495s] writing requirements to controller.egg-info/requires.txt
+[1.495s] writing top-level names to controller.egg-info/top_level.txt
+[1.497s] reading manifest file 'controller.egg-info/SOURCES.txt'
+[1.497s] writing manifest file 'controller.egg-info/SOURCES.txt'
+[1.499s] running build_ext
+[1.499s] Creating /home/ebrahim/control_survey/install/controller/lib/python3.10/site-packages/controller.egg-link (link to .)
+[1.500s] 
+[1.500s] Installed /home/ebrahim/control_survey/build/controller
+[1.500s] running symlink_data
+[1.547s] Invoked command in '/home/ebrahim/control_survey/build/controller' returned '0': PYTHONPATH=/home/ebrahim/control_survey/build/controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ebrahim/control_survey/install/controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/ebrahim/control_survey/build/controller/build --no-deps symlink_data

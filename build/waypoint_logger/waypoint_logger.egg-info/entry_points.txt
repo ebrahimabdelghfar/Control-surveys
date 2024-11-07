@@ -1,0 +1,4 @@
+[console_scripts]
+initial_pose_set = waypoint_logger.initial_pose_set:main
+waypoints_logger = waypoint_logger.waypoints_logger:main
+

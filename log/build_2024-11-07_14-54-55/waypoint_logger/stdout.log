@@ -1,0 +1,16 @@
+running develop
+running egg_info
+writing waypoint_logger.egg-info/PKG-INFO
+writing dependency_links to waypoint_logger.egg-info/dependency_links.txt
+writing entry points to waypoint_logger.egg-info/entry_points.txt
+writing requirements to waypoint_logger.egg-info/requires.txt
+writing top-level names to waypoint_logger.egg-info/top_level.txt
+reading manifest file 'waypoint_logger.egg-info/SOURCES.txt'
+writing manifest file 'waypoint_logger.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/ebrahim/control_survey/install/waypoint_logger/lib/python3.10/site-packages/waypoint-logger.egg-link (link to .)
+Installing initial_pose_set script to /home/ebrahim/control_survey/install/waypoint_logger/lib/waypoint_logger
+Installing waypoints_logger script to /home/ebrahim/control_survey/install/waypoint_logger/lib/waypoint_logger
+
+Installed /home/ebrahim/control_survey/build/waypoint_logger
+running symlink_data

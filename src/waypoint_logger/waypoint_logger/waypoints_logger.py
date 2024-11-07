@@ -16,7 +16,7 @@ class WayPointLogger(Node):
 		self.create_subscription(Odometry,"/carla/ego_vehicle/odometry",self.save_waypoint,1)
 		self.ctr = 0 
 		self.euler = None
-		self.file_name='wp_file_stanly.csv'
+		self.file_name='wp_file_MPC.csv'
 		self.file = open(self.file_name,'w')
 		print("saving to file pure_pursuit/waypoints with a name - ", self.file_name)
 		

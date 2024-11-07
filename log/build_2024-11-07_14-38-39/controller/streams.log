@@ -1,0 +1,23 @@
+[1.048s] Invoking command in '/home/ebrahim/control_survey/build/controller': PYTHONPATH=/home/ebrahim/control_survey/build/controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ebrahim/control_survey/install/controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/ebrahim/control_survey/build/controller/build --no-deps symlink_data
+[1.352s] running develop
+[1.540s] running egg_info
+[1.540s] creating controller.egg-info
+[1.540s] writing controller.egg-info/PKG-INFO
+[1.540s] writing dependency_links to controller.egg-info/dependency_links.txt
+[1.540s] writing entry points to controller.egg-info/entry_points.txt
+[1.540s] writing requirements to controller.egg-info/requires.txt
+[1.540s] writing top-level names to controller.egg-info/top_level.txt
+[1.541s] writing manifest file 'controller.egg-info/SOURCES.txt'
+[1.543s] reading manifest file 'controller.egg-info/SOURCES.txt'
+[1.544s] writing manifest file 'controller.egg-info/SOURCES.txt'
+[1.546s] running build_ext
+[1.547s] Creating /home/ebrahim/control_survey/install/controller/lib/python3.10/site-packages/controller.egg-link (link to .)
+[1.548s] 
+[1.548s] Installed /home/ebrahim/control_survey/build/controller
+[1.548s] running symlink_data
+[1.548s] creating /home/ebrahim/control_survey/install/controller/share/ament_index
+[1.548s] creating /home/ebrahim/control_survey/install/controller/share/ament_index/resource_index
+[1.548s] creating /home/ebrahim/control_survey/install/controller/share/ament_index/resource_index/packages
+[1.549s] symbolically linking /home/ebrahim/control_survey/build/controller/resource/controller -> /home/ebrahim/control_survey/install/controller/share/ament_index/resource_index/packages
+[1.549s] symbolically linking /home/ebrahim/control_survey/build/controller/package.xml -> /home/ebrahim/control_survey/install/controller/share/controller
+[1.601s] Invoked command in '/home/ebrahim/control_survey/build/controller' returned '0': PYTHONPATH=/home/ebrahim/control_survey/build/controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ebrahim/control_survey/install/controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/ebrahim/control_survey/build/controller/build --no-deps symlink_data

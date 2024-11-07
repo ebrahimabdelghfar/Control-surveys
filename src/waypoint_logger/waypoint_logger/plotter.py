@@ -40,7 +40,7 @@ if __name__=='__main__':
     # Read waypoints from the first CSV file
     waypoints = read_points('wp_file.csv')  # Update this to your first CSV file path
     # Read additional data from the second CSV file
-    additional_data = read_points('wp_file_stanly.csv')  # Update this to your second CSV file path
+    additional_data = read_points('wp_file_MPC.csv')  # Update this to your second CSV file path
 
     plt.cla()
     # PURE PURSUIT CODE 

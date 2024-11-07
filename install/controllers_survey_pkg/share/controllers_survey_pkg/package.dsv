@@ -1,0 +1,9 @@
+source;share/controllers_survey_pkg/hook/pythonpath.ps1
+source;share/controllers_survey_pkg/hook/pythonpath.dsv
+source;share/controllers_survey_pkg/hook/pythonpath.sh
+source;share/controllers_survey_pkg/hook/ament_prefix_path.ps1
+source;share/controllers_survey_pkg/hook/ament_prefix_path.dsv
+source;share/controllers_survey_pkg/hook/ament_prefix_path.sh
+source;../../build/controllers_survey_pkg/share/controllers_survey_pkg/hook/pythonpath_develop.ps1
+source;../../build/controllers_survey_pkg/share/controllers_survey_pkg/hook/pythonpath_develop.dsv
+source;../../build/controllers_survey_pkg/share/controllers_survey_pkg/hook/pythonpath_develop.sh

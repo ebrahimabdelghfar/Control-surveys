@@ -1,0 +1,15 @@
+package.xml
+setup.cfg
+setup.py
+resource/waypoint_logger
+waypoint_logger/__init__.py
+waypoint_logger/initial_pose_set.py
+waypoint_logger/plotter.py
+waypoint_logger/waypoints_logger.py
+waypoint_logger.egg-info/PKG-INFO
+waypoint_logger.egg-info/SOURCES.txt
+waypoint_logger.egg-info/dependency_links.txt
+waypoint_logger.egg-info/entry_points.txt
+waypoint_logger.egg-info/requires.txt
+waypoint_logger.egg-info/top_level.txt
+waypoint_logger.egg-info/zip-safe

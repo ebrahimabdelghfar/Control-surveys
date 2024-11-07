@@ -1,0 +1,25 @@
+[1.034s] Invoking command in '/home/ebrahim/control_survey/build/waypoint_logger': PYTHONPATH=/home/ebrahim/control_survey/build/waypoint_logger/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ebrahim/control_survey/install/waypoint_logger/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/ebrahim/control_survey/build/waypoint_logger/build --no-deps symlink_data
+[1.342s] running develop
+[1.532s] running egg_info
+[1.532s] creating waypoint_logger.egg-info
+[1.532s] writing waypoint_logger.egg-info/PKG-INFO
+[1.533s] writing dependency_links to waypoint_logger.egg-info/dependency_links.txt
+[1.533s] writing entry points to waypoint_logger.egg-info/entry_points.txt
+[1.533s] writing requirements to waypoint_logger.egg-info/requires.txt
+[1.533s] writing top-level names to waypoint_logger.egg-info/top_level.txt
+[1.533s] writing manifest file 'waypoint_logger.egg-info/SOURCES.txt'
+[1.535s] reading manifest file 'waypoint_logger.egg-info/SOURCES.txt'
+[1.535s] writing manifest file 'waypoint_logger.egg-info/SOURCES.txt'
+[1.537s] running build_ext
+[1.537s] Creating /home/ebrahim/control_survey/install/waypoint_logger/lib/python3.10/site-packages/waypoint-logger.egg-link (link to .)
+[1.539s] Installing initial_pose_set script to /home/ebrahim/control_survey/install/waypoint_logger/lib/waypoint_logger
+[1.539s] Installing waypoints_logger script to /home/ebrahim/control_survey/install/waypoint_logger/lib/waypoint_logger
+[1.539s] 
+[1.539s] Installed /home/ebrahim/control_survey/build/waypoint_logger
+[1.539s] running symlink_data
+[1.539s] creating /home/ebrahim/control_survey/install/waypoint_logger/share/ament_index
+[1.539s] creating /home/ebrahim/control_survey/install/waypoint_logger/share/ament_index/resource_index
+[1.539s] creating /home/ebrahim/control_survey/install/waypoint_logger/share/ament_index/resource_index/packages
+[1.539s] symbolically linking /home/ebrahim/control_survey/build/waypoint_logger/resource/waypoint_logger -> /home/ebrahim/control_survey/install/waypoint_logger/share/ament_index/resource_index/packages
+[1.539s] symbolically linking /home/ebrahim/control_survey/build/waypoint_logger/package.xml -> /home/ebrahim/control_survey/install/waypoint_logger/share/waypoint_logger
+[1.606s] Invoked command in '/home/ebrahim/control_survey/build/waypoint_logger' returned '0': PYTHONPATH=/home/ebrahim/control_survey/build/waypoint_logger/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ebrahim/control_survey/install/waypoint_logger/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/ebrahim/control_survey/build/waypoint_logger/build --no-deps symlink_data

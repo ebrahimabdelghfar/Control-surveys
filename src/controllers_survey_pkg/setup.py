@@ -1,7 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'waypoint_logger'
-submodules = "controller/car_model"
+package_name = 'controllers_survey_pkg'
 
 setup(
     name=package_name,
@@ -15,14 +14,13 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='ebrahim',
-    maintainer_email='ebrahim@todo.todo',
+    maintainer_email='ebrahimabdelghfar550@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'waypoints_logger = waypoint_logger.waypoints_logger:main',
-            'initial_pose_set = waypoint_logger.initial_pose_set:main',
+            'controllers = controllers_survey_pkg.controllers:main'
         ],
     },
 )
