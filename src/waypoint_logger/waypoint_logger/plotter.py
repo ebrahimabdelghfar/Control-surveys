@@ -57,7 +57,7 @@ if __name__=='__main__':
         additional_x.append(float(point[0]))
         additional_y.append(float(point[1]))
 
-    plt.plot(additional_x, additional_y, "-b", label="Stanely")  # Change color and label as needed
+    plt.plot(additional_x, additional_y, "-b", label="MPC")  # Change color and label as needed
 
     plt.axis("equal")
     plt.grid(True)

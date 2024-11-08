@@ -15,6 +15,10 @@ import rclpy
 from carla_msgs.msg import CarlaEgoVehicleControl
 from std_msgs.msg import Float32
 from controllers_survey_pkg.mpc_pkg.mpc_setup import initialize_mpc_problem
+from controllers_survey_pkg.controllers_param.mpc_param import MPCParams
+from controllers_survey_pkg.controllers_param.general_param import GeneralParam
+from controllers_survey_pkg.controllers_param.pure_pursuit_param import PursuitParam
+from controllers_survey_pkg.controllers_param.stanely_param import StanelyParam
 
 class Controller(Node):
 	def __init__(self,show_animation_flag:bool,controller_type = "mpc") -> None:
@@ -35,33 +39,28 @@ class Controller(Node):
 		self.vel = 0.0
 		self.idx = 0
 		self.v = 0.0 
-		self.WB = 4.5
+		self.WB = GeneralParam().wheelbase
+		self.dt = GeneralParam().DT  # time tick[s]
 		self.waypoints = self.read_points()
-		# Pure Pursuit Parameters
-		self.LOOKAHEAD = 8.5 # 1.5
-		self.dt = 0.01  # time tick[s]
 		# Stanley Control Parameters
-		self.k = 3.5  # Stanley control gain
-		self.k_soft = 50.0
-		self.HORIZON = 25
 		self.__intial_pose_recived= False
+
 		if(controller_type == "pure_pursuit"):
 			self.create_timer(self.dt , self.pure_pursuit)
 			self.__intial_pose_recived = False
 
 		elif(controller_type == "stanley_control"):
 			self.create_timer(self.dt , self.stanley_control)
+
 		elif(controller_type == "mpc"):
-			self.NX = 4 # number of states x, y, psi, velocity, psi
-			self.NU = 2 # number of inputs 
 			self.__mpc_built = False
 			self.__mpc_initialized = False 
 			self.acc_cmd, self.delta_cmd, self.velocity_cmd = 0.0, 0.0, 0.0
-			self.zk = np.zeros((self.NX, 1))  # 
+			self.zk = np.zeros((MPCParams().NO_STATES, 1))  # 
 			self.uk = np.array([[self.acc_cmd, self.delta_cmd]]).T
-			self.u_prev = np.zeros((self.NU, 1))
-			self.xref = np.zeros((self.HORIZON + 1, self.NX))
-			self.uref = np.zeros((self.HORIZON, self.NU))
+			self.u_prev = np.zeros((MPCParams().NO_INPUTS, 1))
+			self.xref = np.zeros((MPCParams().HORIZON + 1, MPCParams().NO_STATES))
+			self.uref = np.zeros((MPCParams().HORIZON, MPCParams().NO_INPUTS))
 			self.setupMpc()
 			self.create_timer(self.dt,self.mpc_control)
 			
@@ -132,11 +131,11 @@ class Controller(Node):
 		nearest_idx = np.argmin(np.sum((curr_xy - waypoints_xy)**2, axis=1))
 		return nearest_idx - 1
 
-	def idx_close_to_lookahead(self,idx):
+	def idx_close_to_lookahead(self,idx,lookahead = 8.5):
 		"""
 		Get closest index to lookahead that is greater than the lookahead
 		"""
-		while self.find_distance_index_based(idx) < self.LOOKAHEAD:
+		while self.find_distance_index_based(idx) < lookahead:
 			idx += 1 
 			if idx >= len(self.waypoints):
 				break
@@ -158,7 +157,7 @@ class Controller(Node):
 		try:
 			cx = self.waypoints[:, 0]; cy = self.waypoints[:, 1]
 			nearest_idx = self.find_nearest_waypoint()
-			idx_near_lookahead = self.idx_close_to_lookahead(nearest_idx) 
+			idx_near_lookahead = self.idx_close_to_lookahead(nearest_idx,PursuitParam().LOOKAHEAD_Pursuit) 
 			target_x = float(self.waypoints[idx_near_lookahead][0])
 			target_y = float(self.waypoints[idx_near_lookahead][1])
 
@@ -189,10 +188,7 @@ class Controller(Node):
 			# Publish messages
 			self.car_control_msg.steer = - (steering_angle / 1.22)
 			self.car_control_msg.throttle = 0.4
-
 			self.command_publisher.publish(self.car_control_msg)
-
-			print("Steering Angle: ", steering_angle)
 			# Plot map progression
 			if self.show_animation:
 				plt.cla()
@@ -245,7 +241,7 @@ class Controller(Node):
 		heading_error = self.pi2pi(heading_error)  # Normalize to [-pi, pi]
 
 		# Stanley steering control
-		steering_angle = heading_error + np.arctan2(self.k * cross_track_error , (self.k_soft + self.v))
+		steering_angle = heading_error + np.arctan2(StanelyParam().k * cross_track_error , (StanelyParam().k_soft + self.v))
 		
 		# Constrain steering angle
 		steering_angle = max(min(steering_angle, 1.22), -1.22)
@@ -276,18 +272,18 @@ class Controller(Node):
 		"""
 		Setup the Model Predictive
 		"""
-		self.MPCController = initialize_mpc_problem(   horizon = 25,
+		self.MPCController = initialize_mpc_problem(   horizon = MPCParams().HORIZON,
                                                        sample_time = self.dt,
-                                                       Q= np.diag([50.0, 50.0, 0.0, 0.01]) , R = np.diag([0.01, 45.01]),
-                                                       Qf= np.diag([50.0, 50.0, 0.0, 0.01]) , Rd = np.diag([0.01, 1e-9]),
+                                                       Q= MPCParams().Q , R = MPCParams().R,
+                                                       Qf= MPCParams().Qf , Rd = MPCParams().Rd,
                                                        wheelbase=self.WB,
-                                                       delta_min=np.degrees(-1.1),
-                                                       delta_max=np.degrees(1.1),
-                                                       vel_min=0.0,
-                                                       vel_max=22.0,
-                                                       acc_min=-0.5,
-                                                       acc_max=0.5,
-                                                       suppress_ipopt_output=True, model_type="continuous")
+                                                       delta_min = - GeneralParam().MAX_STEER,
+                                                       delta_max = GeneralParam().MAX_STEER,
+                                                       vel_min = GeneralParam().MIN_SPEED,
+                                                       vel_max = GeneralParam().MAX_SPEED,
+                                                       acc_min = - GeneralParam().MAX_ACCEL,
+                                                       acc_max = GeneralParam().MAX_ACCEL,
+                                                       suppress_ipopt_output=True, model_type=MPCParams().model_type)
 		
 		self.__mpc_built = True
 
@@ -316,16 +312,11 @@ class Controller(Node):
 			vel = self.v
 			psi = self.pi2pi(self.yaw)
 			nearest_index = self.find_nearest_waypoint()
-			nearest_index_local = self.idx_close_to_lookahead(nearest_index)
+			nearest_index_local = self.idx_close_to_lookahead(nearest_index,MPCParams().LOOKAHEAD_DISTANCE_MPC)
 
 			target_x , target_y , target_yaw = self.waypoints[nearest_index_local][0],self.waypoints[nearest_index_local][1], self.calculateTargetYaw(nearest_index_local,self.waypoints[nearest_index_local][0],self.waypoints[nearest_index_local][1])
-
-			
 			self.xref[:, :] = np.array([target_x, target_y, 0.0 , target_yaw]).T
-			print(f"x_ref: {target_x},y_ref: {target_y}")
 
-
-        
 			if self.__intial_pose_recived:
 				self.zk[0, 0] = x
 				self.zk[1, 0] = y
@@ -340,15 +331,11 @@ class Controller(Node):
 
 				self.car_control_msg.steer =  - self.delta_cmd / 1.22
 				self.car_control_msg.throttle = 0.4
-				print(f"steering_angle = {self.car_control_msg.steer} ")
 				self.command_publisher.publish(self.car_control_msg)
 				
-		
-
-
 def main(args=None):
    rclpy.init(args=args)
-   main_code  = Controller(show_animation_flag = False,controller_type="mpc")
+   main_code  = Controller(show_animation_flag = False,controller_type=GeneralParam().controller)
    rclpy.spin(main_code)
    main_code.destroy_node() 
    rclpy.shutdown()
