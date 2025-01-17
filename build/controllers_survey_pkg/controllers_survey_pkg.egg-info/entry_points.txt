@@ -1,3 +1,0 @@
-[console_scripts]
-controllers = controllers_survey_pkg.controllers:main
-

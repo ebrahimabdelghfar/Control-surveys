@@ -66,6 +66,18 @@ class Controller(Node):
 			
 		self.show_animation = show_animation_flag
 
+	def getTheNexWayPoints(self,nearest_point_indx:int,waypoints:np.array,horizon:int):
+		if nearest_point_indx >= len(waypoints)-horizon:
+			concatenated_array = np.concatenate((waypoints[nearest_point_indx:],np.tile(waypoints[-1],(horizon-len(waypoints)+nearest_point_indx,1))),axis=0)
+			for i in range(horizon):
+				concatenated_array[i][-1] = self.calculateTargetYaw(nearest_point_indx+i,concatenated_array[i][0],concatenated_array[i][1]) 
+			return concatenated_array
+		else:
+			arr = waypoints[nearest_point_indx:nearest_point_indx+horizon]
+			for i in range(horizon):
+				arr[i][-1] = self.calculateTargetYaw(nearest_point_indx+i,arr[i][0],arr[i][1])
+			return arr
+
 	def normalize(self, value,max_range,min_range):
 		"""
 		Normalize the value between the max and min range
@@ -314,8 +326,7 @@ class Controller(Node):
 			nearest_index = self.find_nearest_waypoint()
 			nearest_index_local = self.idx_close_to_lookahead(nearest_index,MPCParams().LOOKAHEAD_DISTANCE_MPC)
 
-			target_x , target_y , target_yaw = self.waypoints[nearest_index_local][0],self.waypoints[nearest_index_local][1], self.calculateTargetYaw(nearest_index_local,self.waypoints[nearest_index_local][0],self.waypoints[nearest_index_local][1])
-			self.xref[:, :] = np.array([target_x, target_y, 0.0 , target_yaw]).T
+			self.xref = self.getTheNexWayPoints(nearest_index_local,self.waypoints,MPCParams().HORIZON + 1)
 
 			if self.__intial_pose_recived:
 				self.zk[0, 0] = x
